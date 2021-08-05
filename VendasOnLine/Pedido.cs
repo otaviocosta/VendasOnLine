@@ -9,13 +9,13 @@ namespace VendasOnLine
         public Guid Id { get; private set; }
         public string Cpf { get; private set; }
         public Cupom CupomDesconto { get; private set; }
-        private List<Item> Itens;
+        private List<ItemPedido> Itens;
 
         public Pedido(string cpf)
         {
             if (!CpfValidator.Validar(cpf)) throw new Exception("CPF inválido");
             Cpf = cpf;
-            Itens = new List<Item>();
+            Itens = new List<ItemPedido>();
             Id = Guid.NewGuid();
         }
 
@@ -31,13 +31,15 @@ namespace VendasOnLine
             return total;
         }
 
-        public void AdicionarItem(Item item)
+        public void AdicionarItem(ItemPedido item)
         {
             Itens.Add(item);
         }
 
         public void AdicionarCupom(Cupom cupom)
         {
+            if (cupom.Expirado())
+                throw new Exception("Cupom expirado");
             CupomDesconto = cupom;
         }
     }

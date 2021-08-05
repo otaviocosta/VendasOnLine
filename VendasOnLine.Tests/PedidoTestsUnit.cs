@@ -28,9 +28,9 @@ namespace VendasOnLine.Tests
 
             //given - Act
             var pedido = new Pedido(cpf);
-            pedido.AdicionarItem(new Item("Guitarra", 1000, 2));
-            pedido.AdicionarItem(new Item("Amplificador", 5000, 1));
-            pedido.AdicionarItem(new Item("Cabo", 30, 3));
+            pedido.AdicionarItem(new ItemPedido("Guitarra", 1000, 2));
+            pedido.AdicionarItem(new ItemPedido("Amplificador", 5000, 1));
+            pedido.AdicionarItem(new ItemPedido("Cabo", 30, 3));
 
             //then - Assert
             Assert.Equal(6, pedido.QuantidadeItens());
@@ -46,14 +46,34 @@ namespace VendasOnLine.Tests
 
             //given - Act
             var pedido = new Pedido(cpf);
-            pedido.AdicionarItem(new Item("Guitarra", 1000, 2));
-            pedido.AdicionarItem(new Item("Amplificador", 5000, 1));
-            pedido.AdicionarItem(new Item("Cabo", 30, 3));
-            pedido.AdicionarCupom(new Cupom("VALE20", 20));
+            pedido.AdicionarItem(new ItemPedido("Guitarra", 1000, 2));
+            pedido.AdicionarItem(new ItemPedido("Amplificador", 5000, 1));
+            pedido.AdicionarItem(new ItemPedido("Cabo", 30, 3));
+            pedido.AdicionarCupom(new Cupom("VALE20", 20, DateTime.Now)) ;
 
             //then - Assert
             Assert.Equal(6, pedido.QuantidadeItens());
             Assert.Equal(5672, pedido.ValorTotal());
         }
+
+
+        [Fact]
+        [Trait("Categoria", "RealizarPedido")]
+        public void NaoDeveAplicarCupomDeDescontoExpirado()
+        {
+            //when - Arrange
+            var cpf = "778.278.412-36";
+            var pedido = new Pedido(cpf);
+            pedido.AdicionarItem(new ItemPedido("Guitarra", 1000, 2));
+            pedido.AdicionarItem(new ItemPedido("Amplificador", 5000, 1));
+            pedido.AdicionarItem(new ItemPedido("Cabo", 30, 3));
+            
+            //given - Act
+            var ex = Assert.Throws<Exception>(() => pedido.AdicionarCupom(new Cupom("VALE20", 20, new DateTime(2021, 07, 15))));
+
+            //then - Assert
+            Assert.Equal("Cupom expirado", ex.Message);
+        }
+
     }
 }

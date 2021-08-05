@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace VendasOnLine
@@ -11,7 +12,7 @@ namespace VendasOnLine
         public PedidoCommandHandler()
         {
             Pedidos = new List<Pedido>();
-            Cupons = new List<Cupom> { new Cupom("VALE20", 20) };
+            Cupons = new List<Cupom> { new Cupom("VALE20", 20, DateTime.Now), new Cupom("VALEEXP", 10, DateTime.Now.AddDays(-1)) };
         }
 
         public Pedido Handle(CriarPedidoCommand command)
@@ -23,10 +24,9 @@ namespace VendasOnLine
 
         public void Handle(AdicionarItemCommand command)
         {
-            var item = new Item(command.Descricao, command.Valor, command.Quantidade);
+            var item = new ItemPedido(command.Descricao, command.Valor, command.Quantidade);
             var pedido = Pedidos.First(p => p.Id.Equals(command.IdPedido));
             pedido.AdicionarItem(item);
-
         }
 
         public void Handle(AdicionarCupomDescontoCommand command)
@@ -35,5 +35,20 @@ namespace VendasOnLine
             var cupom = Cupons.FirstOrDefault(c => c.Codigo.Equals(command.CodigoCupom));
             if (cupom!=null) pedido.AdicionarCupom(cupom);
         }
+
+        public Pedido Handle(CriarPedidoCompletoCommand command)
+        {
+            var pedido = new Pedido(command.Cpf);
+            foreach (var item in command.Items)
+            {
+                pedido.AdicionarItem(item);
+            }
+            var cupom = Cupons.FirstOrDefault(c => c.Codigo.Equals(command.CodigoCupom));
+            if (cupom != null) pedido.AdicionarCupom(cupom);
+
+            Pedidos.Add(pedido);
+            return pedido;
+        }
+
     }
 }
