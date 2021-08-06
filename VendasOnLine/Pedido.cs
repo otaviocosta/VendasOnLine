@@ -9,6 +9,8 @@ namespace VendasOnLine
         public Guid Id { get; private set; }
         public string Cpf { get; private set; }
         public Cupom CupomDesconto { get; private set; }
+        public double Frete { get; private set; }
+
         private List<ItemPedido> Itens;
 
         public Pedido(string cpf)
@@ -28,6 +30,7 @@ namespace VendasOnLine
         {
             var total = Itens.Sum(i => i.Total);
             total -= (total * (CupomDesconto?.Percentual ?? 0) / 100);
+            total += Frete;
             return total;
         }
 
@@ -38,9 +41,13 @@ namespace VendasOnLine
 
         public void AdicionarCupom(Cupom cupom)
         {
-            if (cupom.Expirado())
-                throw new Exception("Cupom expirado");
-            CupomDesconto = cupom;
+            if (!cupom.Expirado())
+                CupomDesconto = cupom;
+        }
+
+        public void AdicionarFrete(double valor)
+        {
+            Frete += valor;
         }
     }
 }
