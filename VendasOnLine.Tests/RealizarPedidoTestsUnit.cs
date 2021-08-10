@@ -11,7 +11,7 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoComCpfInvalido()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "00000000000"
@@ -29,7 +29,7 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoComCpfValido()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -47,7 +47,7 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarItem()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -73,7 +73,7 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarCupomDesconto()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -106,7 +106,7 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarCupomDescontoInvalido()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -139,7 +139,7 @@ namespace VendasOnLine.Tests
         public void DeveFazerUmPedido()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
@@ -167,7 +167,7 @@ namespace VendasOnLine.Tests
         public void NaoDeveAplicarCupomDeDescontoExpirado()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
@@ -194,7 +194,7 @@ namespace VendasOnLine.Tests
         public void DeveCalcularValorDoFrete()
         {
             //when - Arrange
-            var pedidoCommandHandler = new PedidoCommandHandler();
+            var pedidoCommandHandler = new PedidoCommandHandler(new PedidoRepository());
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",

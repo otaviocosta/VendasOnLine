@@ -13,7 +13,7 @@ namespace VendasOnLine.Tests
             var cpf = "00000000000";
 
             //given - Act
-            var ex = Assert.Throws<Exception>(() => new Pedido(cpf));
+            var ex = Assert.Throws<Exception>(() => new Pedido(1, cpf, ""));
 
             //then - Assert
             Assert.Equal("CPF inválido", ex.Message);
@@ -27,7 +27,7 @@ namespace VendasOnLine.Tests
             var cpf = "778.278.412-36";
 
             //given - Act
-            var pedido = new Pedido(cpf);
+            var pedido = new Pedido(1, cpf, "");
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
@@ -45,7 +45,7 @@ namespace VendasOnLine.Tests
             var cpf = "778.278.412-36";
 
             //given - Act
-            var pedido = new Pedido(cpf);
+            var pedido = new Pedido(1, cpf, "");
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
@@ -62,7 +62,7 @@ namespace VendasOnLine.Tests
         {
             //when - Arrange
             var cpf = "778.278.412-36";
-            var pedido = new Pedido(cpf);
+            var pedido = new Pedido(1, cpf, "");
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));

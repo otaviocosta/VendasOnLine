@@ -6,14 +6,14 @@ namespace VendasOnLine
 {
     public class PedidoCommandHandler
     {
-        private List<Pedido> Pedidos;
+        private IPedidoRepository PedidoRepository;
         private List<Cupom> Cupons;
         private List<Item> Itens;
         private ICalculadoraCepApi calculadoraCepApi;
 
-        public PedidoCommandHandler()
+        public PedidoCommandHandler(IPedidoRepository pedidoRepository)
         {
-            Pedidos = new List<Pedido>();
+            PedidoRepository = pedidoRepository;
             Cupons = new List<Cupom>
             {
                 new Cupom("VALE20", 20, DateTime.Now),
@@ -30,8 +30,8 @@ namespace VendasOnLine
 
         public Pedido Handle(CriarPedidoCommand command)
         {
-            var pedido = new Pedido(command.Cpf);
-            Pedidos.Add(pedido);
+            var pedido = new Pedido(1, command.Cpf, command.Cep);
+            PedidoRepository.Incluir(pedido);
             return pedido;
         }
 
@@ -40,20 +40,22 @@ namespace VendasOnLine
             var item = Itens.FirstOrDefault(i => i.Id == command.Id);
             if (item == null) throw new Exception("Item não encontrado");
             var itemPedido = new ItemPedido(command.Id, item.Preco, command.Quantidade);
-            var pedido = Pedidos.First(p => p.Id.Equals(command.IdPedido));
+            var pedido = PedidoRepository.Buscar(command.IdPedido);
             pedido.AdicionarItem(itemPedido);
         }
 
         public void Handle(AdicionarCupomDescontoCommand command)
         {
-            var pedido = Pedidos.First(p => p.Id.Equals(command.IdPedido));
+            var pedido = PedidoRepository.Buscar(command.IdPedido);
             var cupom = Cupons.FirstOrDefault(c => c.Codigo.Equals(command.CodigoCupom));
             if (cupom != null) pedido.AdicionarCupom(cupom);
         }
 
         public PedidoDto Handle(CriarPedidoCompletoCommand command)
         {
-            var pedido = new Pedido(command.Cpf);
+            var seq = PedidoRepository.ProximoSequencial();
+
+            var pedido = new Pedido(seq, command.Cpf, command.Cep);
             var distancia = calculadoraCepApi.Calcular("11.111-111", command.Cep);
             foreach (var itemPedido in command.Items)
             {
@@ -65,9 +67,10 @@ namespace VendasOnLine
             var cupom = Cupons.FirstOrDefault(c => c.Codigo.Equals(command.CodigoCupom));
             if (cupom != null) pedido.AdicionarCupom(cupom);
 
-            Pedidos.Add(pedido);
+            PedidoRepository.Incluir(pedido);
             return new PedidoDto
             {
+                Id = pedido.Id.Value,
                 Cpf = pedido.Cpf,
                 QuantidadeItens = pedido.QuantidadeItens(),
                 ValorTotal = pedido.ValorTotal(),

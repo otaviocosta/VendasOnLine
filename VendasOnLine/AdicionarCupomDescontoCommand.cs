@@ -7,7 +7,7 @@ namespace VendasOnLine
         public AdicionarCupomDescontoCommand()
         {
         }
-        public Guid IdPedido { get; set; }
+        public Id IdPedido { get; set; }
         public string CodigoCupom { get; set; }
     }
 }
