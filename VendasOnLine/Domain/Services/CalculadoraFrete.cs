@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VendasOnLine.Domain
+﻿namespace VendasOnLine.Domain
 {
     public static class CalculadoraFrete
     {

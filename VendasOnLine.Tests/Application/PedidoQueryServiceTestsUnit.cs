@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Xunit;
-
 using VendasOnLine.Application;
+using VendasOnLine.Domain;
 using VendasOnLine.Infra;
+using Xunit;
 
 namespace VendasOnLine.Tests
 {
@@ -10,12 +10,14 @@ namespace VendasOnLine.Tests
     {
         [Fact]
         [Trait("Categoria", "PedidoQueryService")]
-        public void DeveRetornarInformacoesDoPedido()
+        public async void DeveRetornarInformacoesDoPedido()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
@@ -27,7 +29,7 @@ namespace VendasOnLine.Tests
                     new ItemDto{Id = 3, Quantidade = 3 }
                 }
             };
-            var pedidoDto = pedidoCommandHandler.Handle(criarPedidoCommand);
+            var pedidoDto = await pedidoCommandHandler.Handle(criarPedidoCommand);
             var pedidoQueryService = new PedidoQueryService(pedidoRepository);
 
             //given - Act

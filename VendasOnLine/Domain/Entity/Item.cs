@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VendasOnLine.Domain
+﻿namespace VendasOnLine.Domain
 {
     public class Item
     {
@@ -10,11 +8,13 @@ namespace VendasOnLine.Domain
         double profundidade;
         double peso;
 
+        protected Item() { }
+
         public Item(int id, string descricao, double preco, double largura, double altura, double profundidade, double peso)
         {
-            this.Id = id;
+            Id = id;
             this.descricao = descricao;
-            this.Preco = preco;
+            Preco = preco;
             this.largura = largura;
             this.altura = altura;
             this.profundidade = profundidade;

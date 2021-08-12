@@ -50,7 +50,7 @@ namespace VendasOnLine.Tests
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
-            pedido.AdicionarCupom(new Cupom("VALE20", 20, DateTime.Now)) ;
+            pedido.AdicionarCupom(new Cupom("VALE20", 20, DateTime.Now));
 
             //then - Assert
             Assert.Equal(6, pedido.QuantidadeItens());

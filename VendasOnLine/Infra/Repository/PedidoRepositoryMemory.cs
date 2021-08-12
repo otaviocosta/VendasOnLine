@@ -6,22 +6,22 @@ using VendasOnLine.Domain;
 
 namespace VendasOnLine.Infra
 {
-    public class PedidoRepository : IPedidoRepository
+    public class PedidoRepositoryMemory : IPedidoRepository
     {
         private List<Pedido> Pedidos;
-        public PedidoRepository()
+        public PedidoRepositoryMemory()
         {
             Pedidos = new List<Pedido>();
         }
 
         public Pedido Buscar(string id)
         {
-            return Pedidos.First(p => p.Id.Value.Equals(id));
+            return Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id));
         }
 
         public Pedido Buscar(Id id)
         {
-            return Pedidos.First(p => p.Id.Value.Equals(id.Value));
+            return Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id.Value));
         }
 
         public void Incluir(Pedido pedido)

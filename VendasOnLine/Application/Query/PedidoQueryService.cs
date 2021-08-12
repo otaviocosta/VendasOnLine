@@ -17,7 +17,7 @@ namespace VendasOnLine.Application
             return new PedidoDto
             {
                 Id = pedido.Id.Value,
-                Cpf = pedido.Cpf,
+                Cpf = pedido.Cpf.Numero,
                 Cep = pedido.Cep,
                 QuantidadeItens = pedido.QuantidadeItens(),
                 ValorTotal = pedido.ValorTotal(),

@@ -17,7 +17,7 @@ namespace VendasOnLine.Tests
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
 
-            IPedidoRepository repository = new PedidoRepository();
+            IPedidoRepository repository = new PedidoRepositoryMemory();
 
             //given - Act
             //then - Assert
@@ -35,7 +35,7 @@ namespace VendasOnLine.Tests
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
 
-            IPedidoRepository repository = new PedidoRepository();
+            IPedidoRepository repository = new PedidoRepositoryMemory();
             repository.Incluir(pedido);
 
             //given - Act
@@ -50,7 +50,7 @@ namespace VendasOnLine.Tests
         public void DeveRetornarSequencial()
         {
             //when - Arrange
-            IPedidoRepository repository = new PedidoRepository();
+            IPedidoRepository repository = new PedidoRepositoryMemory();
 
             //given - Act
             var seq = repository.ProximoSequencial();
@@ -64,7 +64,7 @@ namespace VendasOnLine.Tests
         public void DeveRetornarProximoSequencial()
         {
             //when - Arrange
-            IPedidoRepository repository = new PedidoRepository();
+            IPedidoRepository repository = new PedidoRepositoryMemory();
             var cpf = "778.278.412-36";
             var pedido = new Pedido(1, cpf, "");
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));

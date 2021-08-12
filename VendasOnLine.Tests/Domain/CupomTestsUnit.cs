@@ -14,7 +14,7 @@ namespace VendasOnLine.Tests
             var codigoCupom = "codigo";
 
             //given - Act
-            var cupom =  new Cupom(codigoCupom, 20, DateTime.Today);
+            var cupom = new Cupom(codigoCupom, 20, DateTime.Today);
 
             //then - Assert
             Assert.False(cupom.Expirado());
@@ -40,7 +40,7 @@ namespace VendasOnLine.Tests
         {
             //when - Arrange
             //given - Act
-            var ex = Assert.Throws<Exception>(()=> new Cupom("", 110, new DateTime()));
+            var ex = Assert.Throws<Exception>(() => new Cupom("", 110, new DateTime()));
 
             //then - Assert
             Assert.Equal("Código inválido", ex.Message);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace VendasOnLine.Domain
@@ -7,7 +6,7 @@ namespace VendasOnLine.Domain
     public class Pedido
     {
         public Id Id { get; private set; }
-        public string Cpf { get; private set; }
+        public Cpf Cpf { get; private set; }
         public Cupom CupomDesconto { get; private set; }
         public double Frete { get; private set; }
         public string Cep { get; private set; }
@@ -16,8 +15,7 @@ namespace VendasOnLine.Domain
 
         public Pedido(int sequencial, string cpf, string cep)
         {
-            if (!CpfValidator.Validar(cpf)) throw new Exception("CPF inválido");
-            Cpf = cpf;
+            Cpf = new Cpf(cpf);
             Itens = new List<ItemPedido>();
             Id = new Id(sequencial);
             Cep = cep;

@@ -12,6 +12,6 @@ namespace VendasOnLine.Domain
 
         int seq;
 
-        public string Value { get; private set ; }
+        public string Value { get; private set; }
     }
 }

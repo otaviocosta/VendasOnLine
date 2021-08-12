@@ -13,9 +13,11 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoComCpfInvalido()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "00000000000"
@@ -33,9 +35,11 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoComCpfValido()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -45,7 +49,7 @@ namespace VendasOnLine.Tests
             var pedido = pedidoCommandHandler.Handle(criarPedidoCommand);
 
             //then - Assert
-            Assert.Equal(criarPedidoCommand.Cpf, pedido.Cpf);
+            Assert.Equal(criarPedidoCommand.Cpf, pedido.Cpf.Numero);
         }
 
         [Fact]
@@ -53,9 +57,11 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarItem()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -81,9 +87,11 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarCupomDesconto()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -116,9 +124,11 @@ namespace VendasOnLine.Tests
         public void RealizarPedidoAdicionarCupomDescontoInvalido()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCommand
             {
                 Cpf = "04831420000"
@@ -148,12 +158,14 @@ namespace VendasOnLine.Tests
 
         [Fact]
         [Trait("Categoria", "RealizarPedido")]
-        public void DeveFazerUmPedido()
+        public async void DeveFazerUmPedido()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepository();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
@@ -168,7 +180,7 @@ namespace VendasOnLine.Tests
             };
 
             //given - Act
-            var pedido = pedidoCommandHandler.Handle(criarPedidoCommand);
+            var pedido = await pedidoCommandHandler.Handle(criarPedidoCommand);
 
             //then - Assert
             Assert.Equal(criarPedidoCommand.Cpf, pedido.Cpf);
@@ -178,17 +190,19 @@ namespace VendasOnLine.Tests
 
         [Fact]
         [Trait("Categoria", "RealizarPedido")]
-        public void NaoDeveAplicarCupomDeDescontoExpirado()
+        public async void NaoDeveAplicarCupomDeDescontoExpirado()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
                 Cep = "11.111-111",
-                CodigoCupom = "VALEEXP",
+                CodigoCupom = "VALE20_EXPIRED",
                 Items = new List<ItemDto>
                 {
                     new ItemDto{Id = 1, Quantidade = 2 },
@@ -198,7 +212,7 @@ namespace VendasOnLine.Tests
             };
 
             //given - Act
-            var pedido = pedidoCommandHandler.Handle(criarPedidoCommand);
+            var pedido = await pedidoCommandHandler.Handle(criarPedidoCommand);
 
             //then - Assert
             Assert.Equal(6, pedido.QuantidadeItens);
@@ -207,12 +221,14 @@ namespace VendasOnLine.Tests
 
         [Fact]
         [Trait("Categoria", "RealizarPedido")]
-        public void DeveCalcularValorDoFrete()
+        public async void DeveCalcularValorDoFrete()
         {
             //when - Arrange
-            var pedidoRepository = new PedidoRepository();
+            var pedidoRepository = new PedidoRepositoryMemory();
+            var cupomRepository = new CupomRepositoryMemory();
+            var itemRepository = new ItemRepositoryMemory();
             var calculadoraCepApi = new CalculadoraCepApi();
-            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, calculadoraCepApi);
+            var pedidoCommandHandler = new PedidoCommandHandler(pedidoRepository, cupomRepository, itemRepository, calculadoraCepApi);
             var criarPedidoCommand = new CriarPedidoCompletoCommand
             {
                 Cpf = "04831420000",
@@ -226,7 +242,7 @@ namespace VendasOnLine.Tests
             };
 
             //given - Act
-            var pedido = pedidoCommandHandler.Handle(criarPedidoCommand);
+            var pedido = await pedidoCommandHandler.Handle(criarPedidoCommand);
 
             //then - Assert
             Assert.Equal(6, pedido.QuantidadeItens);
