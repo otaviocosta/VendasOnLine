@@ -1,53 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace VendasOnLine.Domain
 {
     public class Pedido
     {
-        public Id Id { get; private set; }
-        public Cpf Cpf { get; private set; }
-        public Cupom CupomDesconto { get; private set; }
-        public double Frete { get; private set; }
-        public string Cep { get; private set; }
+        Cpf cpf;
+        List<ItemPedido> itens;
+        Cupom cupomDesconto;
+        double frete;
+        Id id;
+        int sequencial;
+        DateTime dataEmissao;
 
-        private List<ItemPedido> Itens;
-
-        public Pedido(int sequencial, string cpf, string cep)
+        public Pedido(string cpf, DateTime dataEmissao = new DateTime(), int sequencial = 1)
         {
-            Cpf = new Cpf(cpf);
-            Itens = new List<ItemPedido>();
-            Id = new Id(sequencial);
-            Cep = cep;
-        }
-
-        public int QuantidadeItens()
-        {
-            return Itens.Sum(i => i.Quantidade);
-        }
-
-        public double ValorTotal()
-        {
-            var total = Itens.Sum(i => i.Total);
-            total -= (total * (CupomDesconto?.Percentual ?? 0) / 100);
-            total += Frete;
-            return total;
+            this.cpf = new Cpf(cpf);
+            this.itens = new List<ItemPedido>();
+            this.frete = 0;
+            this.dataEmissao = dataEmissao;
+            this.sequencial = sequencial;
+            this.id = new Id(dataEmissao, sequencial);
         }
 
         public void AdicionarItem(ItemPedido item)
         {
-            Itens.Add(item);
+            itens.Add(item);
         }
 
         public void AdicionarCupom(Cupom cupom)
         {
             if (!cupom.Expirado())
-                CupomDesconto = cupom;
+                cupomDesconto = cupom;
+        }
+
+        public double ValorTotal()
+        {
+            var total = itens.Sum(i => i.Total);
+            total -= (total * (cupomDesconto?.Percentual ?? 0) / 100);
+            total += frete;
+            return total;
         }
 
         public void AdicionarFrete(double valor)
         {
-            Frete += valor;
+            frete += valor;
         }
+
+        public Id Id { get => id;  }
+        
+        public double Frete { get => frete; }
+        
+
+        //public int QuantidadeItens()
+        //{
+        //    return itens.Sum(i => i.Quantidade);
+        //}
+
     }
 }

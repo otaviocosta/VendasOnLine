@@ -1,4 +1,5 @@
-﻿using VendasOnLine.Domain;
+﻿using System;
+using VendasOnLine.Domain;
 using Xunit;
 
 namespace VendasOnLine.Tests
@@ -13,7 +14,7 @@ namespace VendasOnLine.Tests
             var seq = 123;
 
             //given - Act
-            var id = new Id(seq);
+            var id = new Id(DateTime.Now, seq);
 
             //then - Assert
             Assert.Equal("202100000123", id.Value);

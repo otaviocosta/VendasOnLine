@@ -29,7 +29,7 @@ namespace VendasOnLine.Infra
             Pedidos.Add(pedido);
         }
 
-        public int ProximoSequencial()
+        public int UltimoSequencial()
         {
             var id = Pedidos.OrderBy(m => m.Id.Value).LastOrDefault()?.Id.Value[^8..] ?? "0";
             var seq = Convert.ToInt32(id);

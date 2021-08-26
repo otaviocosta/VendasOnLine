@@ -4,9 +4,9 @@ namespace VendasOnLine.Domain
 {
     public class Cupom
     {
-        public string Codigo { get; private set; }
-        public double Percentual { get; private set; }
-        public DateTime DataExpiracao { get; private set; }
+        string codigo;
+        double percentual;
+        DateTime dataExpiracao;
 
         public Cupom(string codigo, double percentual, DateTime dataExpiracao)
         {
@@ -14,11 +14,15 @@ namespace VendasOnLine.Domain
             if (percentual < 0 || percentual > 100) throw new Exception("Percentual de desconto inválido");
             if (dataExpiracao == default) throw new Exception("Data inválida");
 
-            Codigo = codigo;
-            Percentual = percentual;
-            DataExpiracao = dataExpiracao;
+            this.codigo = codigo;
+            this.percentual = percentual;
+            this.dataExpiracao = dataExpiracao;
         }
 
-        public bool Expirado() => DataExpiracao < DateTime.Today;
+        public string Codigo { get => codigo; }
+
+        public double Percentual { get => percentual; }
+
+        public bool Expirado() => dataExpiracao < DateTime.Today;
     }
 }

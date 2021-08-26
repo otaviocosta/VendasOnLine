@@ -1,4 +1,5 @@
-﻿using VendasOnLine.Domain;
+﻿using System;
+using VendasOnLine.Domain;
 using VendasOnLine.Infra;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace VendasOnLine.Tests
         {
             //when - Arrange
             var cpf = "778.278.412-36";
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
@@ -30,7 +31,7 @@ namespace VendasOnLine.Tests
         {
             //when - Arrange
             var cpf = "778.278.412-36";
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
@@ -53,7 +54,7 @@ namespace VendasOnLine.Tests
             IPedidoRepository repository = new PedidoRepositoryMemory();
 
             //given - Act
-            var seq = repository.ProximoSequencial();
+            var seq = repository.UltimoSequencial();
 
             //then - Assert
             Assert.Equal(1, seq);
@@ -66,14 +67,14 @@ namespace VendasOnLine.Tests
             //when - Arrange
             IPedidoRepository repository = new PedidoRepositoryMemory();
             var cpf = "778.278.412-36";
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
             repository.Incluir(pedido);
 
             //given - Act
-            var seq = repository.ProximoSequencial();
+            var seq = repository.UltimoSequencial();
 
             //then - Assert
             Assert.Equal(2, seq);

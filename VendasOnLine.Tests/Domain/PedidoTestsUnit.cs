@@ -14,7 +14,7 @@ namespace VendasOnLine.Tests
             var cpf = "00000000000";
 
             //given - Act
-            var ex = Assert.Throws<Exception>(() => new Pedido(1, cpf, ""));
+            var ex = Assert.Throws<Exception>(() => new Pedido(cpf, DateTime.Now, 1));
 
             //then - Assert
             Assert.Equal("CPF inválido", ex.Message);
@@ -28,13 +28,12 @@ namespace VendasOnLine.Tests
             var cpf = "778.278.412-36";
 
             //given - Act
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
 
             //then - Assert
-            Assert.Equal(6, pedido.QuantidadeItens());
             Assert.Equal(7090, pedido.ValorTotal());
         }
 
@@ -46,14 +45,13 @@ namespace VendasOnLine.Tests
             var cpf = "778.278.412-36";
 
             //given - Act
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
             pedido.AdicionarCupom(new Cupom("VALE20", 20, DateTime.Now));
 
             //then - Assert
-            Assert.Equal(6, pedido.QuantidadeItens());
             Assert.Equal(5672, pedido.ValorTotal());
         }
 
@@ -63,7 +61,7 @@ namespace VendasOnLine.Tests
         {
             //when - Arrange
             var cpf = "778.278.412-36";
-            var pedido = new Pedido(1, cpf, "");
+            var pedido = new Pedido(cpf, DateTime.Now, 1);
             pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
             pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
             pedido.AdicionarItem(new ItemPedido(3, 30, 3));
@@ -72,7 +70,6 @@ namespace VendasOnLine.Tests
             pedido.AdicionarCupom(new Cupom("VALE20", 20, new DateTime(2021, 07, 15)));
 
             //then - Assert
-            Assert.Equal(6, pedido.QuantidadeItens());
             Assert.Equal(7090, pedido.ValorTotal());
         }
     }

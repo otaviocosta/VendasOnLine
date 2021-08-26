@@ -4,13 +4,10 @@ namespace VendasOnLine.Domain
 {
     public class Id
     {
-        public Id(int sequencial)
+        public Id(DateTime data, int sequencial)
         {
-            seq = sequencial;
-            Value = $"{DateTime.Now.Year}{sequencial:00000000}";
+            Value = $"{data.Year}{sequencial:00000000}";
         }
-
-        int seq;
 
         public string Value { get; private set; }
     }

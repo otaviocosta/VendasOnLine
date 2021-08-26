@@ -2,30 +2,35 @@
 {
     public class Item
     {
+        int id;
         string descricao;
+        double preco;
         double largura;
         double altura;
         double profundidade;
         double peso;
 
+
         protected Item() { }
 
         public Item(int id, string descricao, double preco, double largura, double altura, double profundidade, double peso)
         {
-            Id = id;
+            this.id = id;
             this.descricao = descricao;
-            Preco = preco;
+            this.preco = preco;
             this.largura = largura;
             this.altura = altura;
             this.profundidade = profundidade;
             this.peso = peso;
         }
+        
+        public int Id { get => id; }
+        
+        public double Preco { get => preco; }
 
-        public int Id { get; private set; }
-        public double Preco { get; private set; }
+        public double Volume() => largura / 100 * altura / 100 * profundidade / 100;
 
         public double Densidade() => peso / Volume();
 
-        public double Volume() => largura / 100 * altura / 100 * profundidade / 100;
     }
 }
