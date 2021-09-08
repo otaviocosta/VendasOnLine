@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using VendasOnLine.Domain;
 
 namespace VendasOnLine.Infra
@@ -14,14 +14,14 @@ namespace VendasOnLine.Infra
             Pedidos = new List<Pedido>();
         }
 
-        public Pedido Buscar(string id)
+        public async Task<Pedido> Buscar(string id)
         {
-            return Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id));
+            return await Task.FromResult(Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id)));
         }
 
-        public Pedido Buscar(Id id)
+        public async Task<Pedido> Buscar(Id id)
         {
-            return Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id.Value));
+            return await Task.FromResult(Pedidos.FirstOrDefault(p => p.Id.Value.Equals(id.Value)));
         }
 
         public void Incluir(Pedido pedido)
@@ -29,11 +29,11 @@ namespace VendasOnLine.Infra
             Pedidos.Add(pedido);
         }
 
-        public int UltimoSequencial()
+        public async Task<int> UltimoSequencial()
         {
             var id = Pedidos.OrderBy(m => m.Id.Value).LastOrDefault()?.Id.Value[^8..] ?? "0";
             var seq = Convert.ToInt32(id);
-            return ++seq;
+            return await Task.FromResult(seq);
         }
     }
 }

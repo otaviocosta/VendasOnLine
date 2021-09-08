@@ -4,16 +4,16 @@ using VendasOnLine.Domain;
 
 namespace VendasOnLine.Infra
 {
-    public class ItemRepository : IItemRepository
+    public class CupomRepository : ICupomRepository
     {
         IDatabase database;
 
-        public ItemRepository(IDatabase database)
+        public CupomRepository(IDatabase database)
         {
             this.database = database;
         }
 
-        public async Task<Item> Buscar(int id)
+        public async Task<Cupom> Buscar(string id)
         {
             using var db = database.CreateConnection();
 
@@ -31,7 +31,7 @@ namespace VendasOnLine.Infra
                     WHERE
 	                    i.Id = @ID
                 ";
-            return await db.QueryFirstAsync<Item>(query, new { ID = id });
+            return await db.QueryFirstAsync<Cupom>(query, new { ID = id });
         }
     }
 }

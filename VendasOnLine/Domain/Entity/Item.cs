@@ -24,12 +24,10 @@
             this.peso = peso;
         }
         
-        public int Id { get => id; }
-        
+        public int Id { get => id; }        
+        public string Descricao { get => descricao; }
         public double Preco { get => preco; }
-
         public double Volume() => largura / 100 * altura / 100 * profundidade / 100;
-
         public double Densidade() => peso / Volume();
 
     }

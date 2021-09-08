@@ -1,7 +1,9 @@
-﻿namespace VendasOnLine.Domain
+﻿using System.Threading.Tasks;
+
+namespace VendasOnLine.Domain
 {
     public interface ICupomRepository
     {
-        Cupom Buscar(string id);
+        Task<Cupom> Buscar(string id);
     }
 }

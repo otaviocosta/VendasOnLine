@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VendasOnLine.Domain;
 
 namespace VendasOnLine.Infra
@@ -17,7 +18,7 @@ namespace VendasOnLine.Infra
             };
         }
 
-        public Cupom Buscar(string codigo)
+        public async Task<Cupom> Buscar(string codigo)
         {
             return Cupons.FirstOrDefault(p => p.Codigo.Equals(codigo));
         }

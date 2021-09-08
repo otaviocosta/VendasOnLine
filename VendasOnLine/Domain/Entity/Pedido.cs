@@ -10,6 +10,7 @@ namespace VendasOnLine.Domain
         List<ItemPedido> itens;
         Cupom cupomDesconto;
         double frete;
+        double taxas;
         Id id;
         int sequencial;
         DateTime dataEmissao;
@@ -48,15 +49,14 @@ namespace VendasOnLine.Domain
             frete += valor;
         }
 
+        public void AdicionarTaxas(double valor)
+        {
+            taxas += valor;
+        }
+
         public Id Id { get => id;  }
-        
         public double Frete { get => frete; }
-        
-
-        //public int QuantidadeItens()
-        //{
-        //    return itens.Sum(i => i.Quantidade);
-        //}
-
+        public double Taxas { get => taxas; }
+        public IEnumerable<ItemPedido> Itens { get => itens; }
     }
 }

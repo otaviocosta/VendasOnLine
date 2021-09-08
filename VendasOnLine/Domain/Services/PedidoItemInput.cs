@@ -1,6 +1,6 @@
-﻿namespace VendasOnLine.Application
+﻿namespace VendasOnLine.Domain
 {
-    public class ItemDto
+    public class PedidoItemInput
     {
         public int Id { get; set; }
         public int Quantidade { get; set; }

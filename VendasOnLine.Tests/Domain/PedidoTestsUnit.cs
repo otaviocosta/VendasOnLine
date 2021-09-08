@@ -72,5 +72,23 @@ namespace VendasOnLine.Tests
             //then - Assert
             Assert.Equal(7090, pedido.ValorTotal());
         }
+
+        [Fact]
+        [Trait("Categoria", "RealizarPedido")]
+        public void DeveCriarUmPedidoCalculandoCodigo()
+        {
+            //when - Arrange
+            var cpf = "778.278.412-36";
+            var pedido = new Pedido(cpf, DateTime.Now, 2);
+            pedido.AdicionarItem(new ItemPedido(1, 1000, 2));
+            pedido.AdicionarItem(new ItemPedido(2, 5000, 1));
+            pedido.AdicionarItem(new ItemPedido(3, 30, 3));
+
+            //given - Act
+            pedido.AdicionarCupom(new Cupom("VALE20", 20, new DateTime(2021, 07, 15)));
+
+            //then - Assert
+            Assert.Equal("202100000002", pedido.Id.Value);
+        }
     }
 }

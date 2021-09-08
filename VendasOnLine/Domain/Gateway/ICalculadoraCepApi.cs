@@ -1,4 +1,4 @@
-﻿namespace VendasOnLine.Infra
+﻿namespace VendasOnLine.Domain
 {
     public interface ICalculadoraCepApi
     {

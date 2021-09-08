@@ -27,7 +27,7 @@ namespace VendasOnLine.Tests
 
         [Fact]
         [Trait("Categoria", "PedidoRepository")]
-        public void DeveBuscarDoRepositorio()
+        public async void DeveBuscarDoRepositorio()
         {
             //when - Arrange
             var cpf = "778.278.412-36";
@@ -40,7 +40,7 @@ namespace VendasOnLine.Tests
             repository.Incluir(pedido);
 
             //given - Act
-            var pedidoResgatado = repository.Buscar(pedido.Id.Value);
+            var pedidoResgatado = await repository.Buscar(pedido.Id.Value);
 
             //then - Assert
             Assert.Equal(pedido.Id.Value, pedidoResgatado.Id.Value);
@@ -48,21 +48,21 @@ namespace VendasOnLine.Tests
 
         [Fact]
         [Trait("Categoria", "PedidoRepository")]
-        public void DeveRetornarSequencial()
+        public async void DeveRetornarSequencial()
         {
             //when - Arrange
             IPedidoRepository repository = new PedidoRepositoryMemory();
 
             //given - Act
-            var seq = repository.UltimoSequencial();
+            var seq = await repository.UltimoSequencial();
 
             //then - Assert
-            Assert.Equal(1, seq);
+            Assert.Equal(0, seq);
         }
 
         [Fact]
         [Trait("Categoria", "PedidoRepository")]
-        public void DeveRetornarProximoSequencial()
+        public async void DeveRetornarProximoSequencial()
         {
             //when - Arrange
             IPedidoRepository repository = new PedidoRepositoryMemory();
@@ -74,10 +74,10 @@ namespace VendasOnLine.Tests
             repository.Incluir(pedido);
 
             //given - Act
-            var seq = repository.UltimoSequencial();
+            var seq = await repository.UltimoSequencial();
 
             //then - Assert
-            Assert.Equal(2, seq);
+            Assert.Equal(1, seq);
         }
 
     }
