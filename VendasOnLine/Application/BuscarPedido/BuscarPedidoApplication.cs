@@ -18,6 +18,8 @@ namespace VendasOnLine.Application
         public async Task<BuscarPedidoOutput> Execute(string id)
         {
             var pedido = await _pedidoRepository.Buscar(id);
+            if (pedido == null) return null;
+
             var itens = new List<ItemOutput>();
             foreach (var itemPedido in pedido.Itens)
             {
