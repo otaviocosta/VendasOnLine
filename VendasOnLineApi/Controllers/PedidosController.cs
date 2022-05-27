@@ -56,7 +56,7 @@ namespace VendasOnLineApi.Controllers
             logger.LogInformation("Criando pedido {0}", input);
             CriarPedidoApplication criarPedidoApplication = new CriarPedidoApplication(_pedidoRepository, _cupomRepository, _itemRepository, _calculadoraCepApi, _tabelaTaxasRepository, _movimentacaoEstoqueRepository);
             var pedido = await criarPedidoApplication.Execute(input);
-            return CreatedAtAction("Get", new { id = pedido.Id }, pedido);  
+            return CreatedAtAction("Post", new { id = pedido.Id }, pedido);  
         }
     }
 }
